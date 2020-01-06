@@ -1,0 +1,36 @@
+---
+
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: Prometheus
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+    - targets:
+      - localhost:9090
+
+  - job_name: Website
+    metrics_path: /metrics
+    scheme: http
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+        - webapp:4567
+        - team1:4567
+        - team2:4567
+        - team3:4567
+        - team4:4567
+        - team5:4567
+        - team6:4567
+        - team7:4567
+        - team8:4567
+        - team9:4567
+        - team10:4567
+        - team11:4567
+        - team12:4567
