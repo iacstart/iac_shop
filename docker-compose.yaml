@@ -12,7 +12,7 @@ services:
     tty: true
     stdin_open: true
     environment:
-      - RUBY_ENV=development
+      - SINATRA_ENV=development
     networks:
       - monitoring
 

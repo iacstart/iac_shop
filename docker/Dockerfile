@@ -1,6 +1,6 @@
 from ruby:alpine3.10
 
-ENV RUBY_ENV=production
+ENV SINATRA_ENV=production
 ENV APP_PORT=4567
 ENV APP_FILE=app.rb
 

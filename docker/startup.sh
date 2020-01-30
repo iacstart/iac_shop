@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$RUBY_ENV" == "production" ]; then
+if [ "$SINATRA_ENV" == "production" ]; then
   bundle config set without development test
 fi
 
