@@ -9,27 +9,40 @@ require 'prometheus_exporter/client'
 
 # require 'pry'
 
-# class DigitalPowerKlausurtagung < Sinatra::Base
-  set :haml, :format => :html5
-  app_state = 'ready'
+class ApplicationController < Sinatra::Base
+
+  configure :production, :development do
+    set :haml, :format => :html5, :layout => :'layouts/main'
+    # set :views, "views"
+    # set :public_dir, 'public'
+    enable :logging
+  end
+
+  @app_state = 'okay'
+
+  def is_hacked?
+    return @app_state != 'okay'
+  end
 
   get '/' do
-    params[:app_status] = app_state
-    if app_state == 'ready'
-      haml :index
-    else
-      status 500
-    end
+    haml :index
   end
 
   get '/status' do
-    status 200
+    logger.info "app_state: #{@app_state}"
+
+    if is_hacked?
+      @app_state = 'error'
+      status 500
+    else
+      haml :status, :layout => :'layouts/status'
+    end
   end
 
   post '/notification' do
-    income_message = request.body
     payload = JSON.parse(request.body.read)
-    app_state = payload["change"]
+    @app_state = payload["change"]
+    redirect('/status')
   end
 
 
@@ -38,6 +51,6 @@ require 'prometheus_exporter/client'
   end
 
   error 400..500 do
-    haml :error
+    haml :error, :layout => :'layouts/status'
   end
-# end
+end

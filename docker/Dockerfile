@@ -4,6 +4,12 @@ ENV RUBY_ENV=production
 ENV APP_PORT=4567
 ENV APP_FILE=app.rb
 
+RUN apk add --update \
+  build-base \
+  mariadb-dev \
+  sqlite-dev \
+  && rm -rf /var/cache/apk/*
+
 ADD ./.gemrc ~/.gemrc
 
 ADD ./startup.sh /

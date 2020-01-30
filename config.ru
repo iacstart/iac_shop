@@ -1,4 +1,4 @@
-require './app'
+require_relative 'config/environment'
 
 require 'rack'
 require 'prometheus/middleware/collector'
@@ -8,4 +8,4 @@ use Rack::Deflater
 use Prometheus::Middleware::Collector
 use Prometheus::Middleware::Exporter
 
-run Sinatra::Application
+run ApplicationController

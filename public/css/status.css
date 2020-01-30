@@ -1,0 +1,14 @@
+body.error {
+  background-color: red;
+}
+
+body.okay {
+  background-color: green;
+}
+.skull {
+  font-size: 128pt;
+}
+
+.okay {
+  font-size: 128pt;
+}

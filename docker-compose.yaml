@@ -9,135 +9,139 @@ services:
       - "4567:4567"
     volumes:
       - ./:/opt/webapp
+    tty: true
+    stdin_open: true
+    environment:
+      - RUBY_ENV=development
     networks:
       - monitoring
 
-  team1:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team1:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team2:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team2:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team3:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team3:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team4:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team4:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team5:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team5:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team6:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team6:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team7:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team7:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team8:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team8:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team9:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team9:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team10:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team10:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team11:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team11:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
-  team12:
-    build: ./docker/
-    expose:
-      - 4567
-    volumes:
-      - ./:/opt/webapp
-    networks:
-      - monitoring
+  # team12:
+  #   build: ./docker/
+  #   expose:
+  #     - 4567
+  #   volumes:
+  #     - ./:/opt/webapp
+  #   networks:
+  #     - monitoring
 
   prometheus:
     image: prom/prometheus:v2.15.1
     ports:
       - "9090:9090"
-    depends_on:
-      - webapp
-      - team1
-      - team2
-      - team3
-      - team4
-      - team5
-      - team6
-      - team7
-      - team8
-      - team9
-      - team10
-      - team11
-      - team12
+    # depends_on:
+    #   - webapp
+    #   - team1
+    #   - team2
+    #   - team3
+    #   - team4
+    #   - team5
+    #   - team6
+    #   - team7
+    #   - team8
+    #   - team9
+    #   - team10
+    #   - team11
+    #   - team12
     volumes:
       - ./docker/prometheus.yaml:/etc/prometheus/prometheus.yml
       - prom-data:/prometheus
@@ -145,12 +149,16 @@ services:
       - monitoring
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:6.6.0
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: 'true'
       GF_USERS_ALLOW_SIGN_UP: 'false'
       GF_SECURITY_ADMIN_PASSWORD: 'secret'
       GF_PATHS_PROVISIONING: /var/lib/grafana/provisioning/
+      GF_SECURITY_ALLOW_EMBEDDING: 'true'
+      GF_PANELS_DISABLE_SANITIZE_HTML: 'true'
+      GF_SECURITY_COOKIE_SAMESITE: 'none'
+      # GF_INSTALL_PLUGINS: 'ryantxu-ajax-panel'
       TZ: "Europe/Berlin"
     ports:
       - "3000:3000"
