@@ -13,6 +13,8 @@ services:
     stdin_open: true
     environment:
       - SINATRA_ENV=development
+      # - SINATRA_ENV=production
+      # - RACK_ENV=production
     networks:
       - monitoring
 
