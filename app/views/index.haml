@@ -1,0 +1,11 @@
+
+%h1 All devices
+
+.grid-x.grid-padding-x.small-up-2
+  - @devices.each do |device|
+    .cell.small-2.card{style: "width: 300px;"}
+      .card-divider="#{device.device_name}"
+      %img{src: device.product_image}
+      .card-section
+        %h4="OS: #{device.platform}"
+        %p="#{device.product_desc}"

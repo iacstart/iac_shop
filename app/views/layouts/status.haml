@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %title Digital WebShop
+    %link(rel="stylesheet" href="css/foundation.css")
+    %link(rel="stylesheet" href="css/app.css")
+    %link(rel="stylesheet" href="css/status.css")
+
+    %script{:type => "text/javascript", :src  => "js/vendor/jquery.js"}
+    %script{:type => "text/javascript", :src  => "js/vendor/what-input.js"}
+    %script{:type => "text/javascript", :src  => "js/vendor/foundation.js"}
+
+    %script{:type => "text/javascript", :src  => "js/foundation.js"}
+    %script{:type => "text/javascript", :src  => "js/app.js"}
+
+  %body{class: "#{@app_state}"}
+    = yield
