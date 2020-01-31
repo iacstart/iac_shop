@@ -8,16 +8,19 @@
 
   tasks:
     - name: install software
-      apt:
+      yum:
         pkg:
           - git
           - ruby
-          - libmariadb-dev
-          - sqlite3
-          - libsqlite3-dev
-          - ruby-dev
-          - build-essential
-          - policykit-1
+          - make
+          - gcc
+          - ruby-devel
+          - mariadb
+          - mariadb-devel
+          - sqlite
+          - sqlite-devel
+          - redhat-rpm-config
+          # - policykit-1
       become: true
 
     - name: create app folder
@@ -33,24 +36,19 @@
         dest: "{{ install_path }}"
 
     - name: install bunlder gem
-      # gem:
-      #   name: bundler
-      #   version: 2.1.4
-      #   state: present
-      #   env_shebang: true
-      command: gem install bundler -v 2.1.4
-      become: true
-
-    - name: config bundler
-      command: bundle config set path './vendor/bundle'
-      args:
-        chdir: "{{ install_path }}"
+      gem:
+        name: bundler
+        version: 2.1.4
+        state: present
+        env_shebang: true
 
     - name: install gems
-      # bundler:
-      #   state: present
-      #   chdir: "{{ install_path }}"
-      command: "bundle install --gemfile={{install_path}}/Gemfile"
+      bundler:
+        state: present
+        chdir: "{{ install_path }}"
+
+    - name: pristine gems
+      command: bundle pristine
       args:
         chdir: "{{ install_path }}"
 
@@ -59,9 +57,9 @@
       args:
         chdir: "{{ install_path }}"
       loop:
-        - "bundle exec rake db:create"
-        - "bundle exec rake db:migrate"
-        - "bundle exec rake db:setup"
+        - "$HOME/.gem/ruby/gems/bundler-2.1.4/exe/bundle exec rake db:create"
+        - "$HOME/.gem/ruby/gems/bundler-2.1.4/exe/bundle exec rake db:migrate"
+        - "$HOME/.gem/ruby/gems/bundler-2.1.4/exe/bundle exec rake db:setup"
 
     - name: add start up script
       template:

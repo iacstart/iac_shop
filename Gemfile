@@ -4,7 +4,6 @@ source "https://rubygems.org"
 gem "sinatra"
 gem "activerecord", require: 'active_record'
 gem "sinatra-activerecord", :require => 'sinatra/activerecord'
-gem "sqlite3"
 gem "sinatra-contrib"
 gem 'rake'
 gem 'require_all'
@@ -15,6 +14,15 @@ gem 'jwt'
 
 gem 'prometheus_exporter'
 gem 'prometheus-client'
+
+
+group :sqlite do
+  gem "sqlite3"
+end
+
+group :mysql do
+  gem "mysql2"
+end
 
 group :development do
   # gem "tux"
