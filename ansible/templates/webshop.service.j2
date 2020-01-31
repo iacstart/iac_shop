@@ -1,0 +1,18 @@
+# /etc/systemd/system/webshop.service
+[Unit]
+Description=Webshop
+
+[Service]
+Type=simple
+
+User={{ ansible_ssh_user }}
+# Group=root
+
+WorkingDirectory=/opt/iac_shop
+ExecStart=/opt/iac_shop/rackup_webshop.sh
+
+# Restart=always
+TimeoutSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+cd $(dirname $(readlink -f "$0"))
+
+export SINATRA_ENV=development
+export RACK_ENV=development
+
+bundle exec rackup --env "$SINATRA_ENV" -o 0.0.0.0 -p 4567 >> production.log 2>&1

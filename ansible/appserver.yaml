@@ -1,0 +1,90 @@
+---
+
+- hosts: appserver
+  gather_facts: false
+
+  vars:
+    install_path: /opt/iac_shop
+
+  tasks:
+    - name: install software
+      apt:
+        pkg:
+          - git
+          - ruby
+          - libmariadb-dev
+          - sqlite3
+          - libsqlite3-dev
+          - ruby-dev
+          - build-essential
+          - policykit-1
+      become: true
+
+    - name: create app folder
+      file:
+        path: "{{ install_path }}"
+        state: directory
+        owner: "{{ ansible_ssh_user }}"
+      become: true
+
+    - name: clone webshop repo
+      git:
+        repo: https://github.com/iacstart/iac_shop.git
+        dest: "{{ install_path }}"
+
+    - name: install bunlder gem
+      # gem:
+      #   name: bundler
+      #   version: 2.1.4
+      #   state: present
+      #   env_shebang: true
+      command: gem install bundler -v 2.1.4
+      become: true
+
+    - name: config bundler
+      command: bundle config set path './vendor/bundle'
+      args:
+        chdir: "{{ install_path }}"
+
+    - name: install gems
+      # bundler:
+      #   state: present
+      #   chdir: "{{ install_path }}"
+      command: "bundle install --gemfile={{install_path}}/Gemfile"
+      args:
+        chdir: "{{ install_path }}"
+
+    - name: setup database
+      command: "{{ item }}"
+      args:
+        chdir: "{{ install_path }}"
+      loop:
+        - "bundle exec rake db:create"
+        - "bundle exec rake db:migrate"
+        - "bundle exec rake db:setup"
+
+    - name: add start up script
+      template:
+        src: rackup_webshop.sh.j2
+        dest: "{{ install_path }}/rackup_webshop.sh"
+        mode: 0777
+        owner: "{{ ansible_ssh_user }}"
+
+    - name: copy service template
+      template:
+        src: webshop.service.j2
+        dest: "/etc/systemd/system/webshop.service"
+        mode: 0664
+      become: true
+
+    - name: enable webshop.service
+      systemd:
+        name: webshop
+        state: started
+        daemon_reload: yes
+        enabled: yes
+      become: true
+
+  handlers:
+    - name: restart systemd
+      systemd: name=webshop.service state=restarted daemon_reload=yes
