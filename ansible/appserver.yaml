@@ -51,6 +51,12 @@
         chdir: "{{ install_path }}"
       # become: true
 
+    - name: Add another bin dir to system-wide $PATH.
+      copy:
+        dest: /etc/profile.d/custom-path.sh
+        content: 'PATH=$PATH:/opt/iac_shop/vendor/bundle/ruby/2.5.0/bin:$HOME/bin/'
+      become: true
+
     - name: pristine gems
       command: bundle pristine
       args:

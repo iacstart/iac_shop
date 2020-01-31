@@ -7,4 +7,6 @@ cd $(dirname $(readlink -f "$0"))
 export SINATRA_ENV=development
 export RACK_ENV=development
 
-$HOME/.gem/ruby/gems/bundler-2.1.4/exe/bundle exec rackup --env "$SINATRA_ENV" -o 0.0.0.0 -p 4567 >> production.log 2>&1
+export PATH=$PATH:$HOME/bin/
+
+bundle exec rackup --env "$SINATRA_ENV" -o 0.0.0.0 -p 4567 >> production.log 2>&1
