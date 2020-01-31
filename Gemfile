@@ -20,9 +20,9 @@ group :sqlite do
   gem "sqlite3"
 end
 
-group :mysql do
-  gem "mysql2"
-end
+# group :mysql do
+#   gem "mysql2"
+# end
 
 group :development do
   # gem "tux"
