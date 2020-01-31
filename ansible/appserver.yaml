@@ -40,17 +40,22 @@
         name: bundler
         version: 2.1.4
         state: present
+        # user_install: false
         env_shebang: true
+      # become: true
 
-    - name: install gems
+    - name: install gems with bundler
       bundler:
         state: present
+        user_install: true
         chdir: "{{ install_path }}"
+      # become: true
 
     - name: pristine gems
       command: bundle pristine
       args:
         chdir: "{{ install_path }}"
+      # become: true
 
     - name: setup database
       command: "{{ item }}"
