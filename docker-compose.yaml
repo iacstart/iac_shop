@@ -2,7 +2,7 @@ version: '3'
 
 services:
   webapp:
-    build: ./docker/
+    build: ./docker/webapp
     expose:
       - 4567
     ports:
@@ -13,118 +13,11 @@ services:
     stdin_open: true
     environment:
       - SINATRA_ENV=development
+      - RACK_ENV=development
       # - SINATRA_ENV=production
       # - RACK_ENV=production
     networks:
       - monitoring
-
-  # team1:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team2:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team3:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team4:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team5:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team6:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team7:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team8:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team9:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team10:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team11:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
-
-  # team12:
-  #   build: ./docker/
-  #   expose:
-  #     - 4567
-  #   volumes:
-  #     - ./:/opt/webapp
-  #   networks:
-  #     - monitoring
 
   prometheus:
     image: prom/prometheus:v2.15.1
@@ -132,20 +25,8 @@ services:
       - "9090:9090"
     # depends_on:
     #   - webapp
-    #   - team1
-    #   - team2
-    #   - team3
-    #   - team4
-    #   - team5
-    #   - team6
-    #   - team7
-    #   - team8
-    #   - team9
-    #   - team10
-    #   - team11
-    #   - team12
     volumes:
-      - ./docker/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./docker/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
       - prom-data:/prometheus
     networks:
       - monitoring
@@ -160,15 +41,15 @@ services:
       GF_SECURITY_ALLOW_EMBEDDING: 'true'
       GF_PANELS_DISABLE_SANITIZE_HTML: 'true'
       GF_SECURITY_COOKIE_SAMESITE: 'none'
-      # GF_INSTALL_PLUGINS: 'ryantxu-ajax-panel'
+      GF_INSTALL_PLUGINS: 'ryantxu-ajax-panel'
       TZ: "Europe/Berlin"
     ports:
       - "3000:3000"
     depends_on:
       - prometheus
     volumes:
-      - ./grafana/provisioning/:/var/lib/grafana/provisioning/
-      - ./grafana/dashboards/:/var/lib/grafana/dashboards/
+      - ./docker/grafana/provisioning/:/var/lib/grafana/provisioning/
+      - ./docker/grafana/dashboards/:/var/lib/grafana/dashboards/
       - dp-grafana-data:/var/lib/grafana
     networks:
       - monitoring

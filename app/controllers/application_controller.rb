@@ -3,7 +3,8 @@ class ApplicationController < Sinatra::Base
   configure :production, :development do
     set :haml, :format => :html5, :layout => :'layouts/main'
     set :views, "app/views"
-    set :public_dir, 'public'
+    # set :public_folder, Proc.new { AppSetting.first.version_number == '94c6a0' ? 'public' : '/mnt/image' }
+    set :public_folder, 'public'
     enable :sessions
     set :session_secret, "33886b1bf399f8c052b04244ab97a088"
     enable :logging
