@@ -9,7 +9,7 @@ end
     device_name: Faker::Device.model_name,
     platform: Faker::Device.platform,
     serial: Faker::Device.serial,
-    product_image: "images/#{d}",
+    product_image: "images/robo/#{d}",
     product_desc: Faker::Lorem.paragraph(sentence_count: 2)
   )
 end
